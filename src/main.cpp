@@ -21,11 +21,27 @@ using namespace std;
 
 int main()
 {
-    cout << "TP1 - Gestion de lexiques" << endl;
+    cout << "TP1 - Manipulation of lexical data" << endl;
 
     lexique lexLesMiserables("Les Miserables", "assets/lesMiserables_A.txt");
 
     lexique lexNDDP("Notre Dame de Paris", "assets/notreDameDeParis_A.txt");
+
+    cout << "Lexique of The Miserables well created and contains ";
+    lexLesMiserables.displayNbWords();
+    cout << " words." << endl;
+
+    lexLesMiserables.saveLexique("assets/lexique_lesMiserables.txt");
+
+    lexNDDP.saveLexique("assets/lexique_notreDameDeParis.txt");
+
+    cout << lexLesMiserables << endl;
+
+    cout << "The word 'the' appears " << lexLesMiserables.getFrequenceFromWord("the") << " times in Les Miserables." << endl;
+
+    lexLesMiserables.deleteWord("the");
+
+    cout << "After deleting 'the', it now appears " << lexLesMiserables.getFrequenceFromWord("the") << " times in Les Miserables." << endl;
 
     return 0;
 }

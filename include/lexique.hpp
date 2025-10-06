@@ -20,7 +20,7 @@ class lexique
 {
 private:
    string nom;
-   vector<char> mots;
+   vector<string> mots;
    vector<int> frequences;
 public:
     lexique(string n, string f);

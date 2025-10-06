@@ -41,7 +41,9 @@ lexique::lexique(string n, string f)
 
     util::to_lower(contenu);
 
-    pch = strtok(const_cast<char*>(contenu.c_str()), " ,.-");
+    util::remove_punctuation(contenu);
+
+    pch = strtok(const_cast<char*>(contenu.c_str()), " 0123456789\n\r\t");
 
     while (pch != NULL)
     {
@@ -60,10 +62,8 @@ lexique::lexique(string n, string f)
             ptr_frequences->push_back(1);
         }
 
-        pch = strtok(NULL, " ,.-");
+        pch = strtok(NULL, " 0123456789\n\r\t");
     }
-
-    cout << "Lexique " << this->nom << " créé avec " << this->mots.size() << " mots." << endl;
 
     return;
 }
@@ -87,9 +87,9 @@ lexique::~lexique()
  */
 void lexique::saveLexique(string f){
     ofstream Fichier(f);
-    for(char mot : mots){
-        vector<char>::iterator it = find(mots.begin(), mots.end(), mot);
-        Fichier << "Mot : " << mot << "/ Nombre d'itération : " << frequences[it-mots.begin()] << endl;
+    for(string mot : mots){
+        vector<string>::iterator it = find(mots.begin(), mots.end(), mot);
+        Fichier << mot << " : " << frequences[it-mots.begin()] << endl;
     }
     Fichier.close();
 }
@@ -102,7 +102,7 @@ void lexique::saveLexique(string f){
  * @return int 
  */
 int lexique::getFrequenceFromWord(string mot){
-    vector<char>::iterator it = find(mots.begin(), mots.end(), mot);
+    vector<string>::iterator it = find(mots.begin(), mots.end(), mot);
     if(it != mots.end()){
         return frequences[it-mots.begin()];
     }
@@ -116,7 +116,7 @@ int lexique::getFrequenceFromWord(string mot){
  * @param mot selected word
  */
 void lexique::deleteWord(string mot){
-    vector<char>::iterator it = find(mots.begin(), mots.end(), mot);
+    vector<string>::iterator it = find(mots.begin(), mots.end(), mot);
     if(it != mots.end()) mots.erase(it);
 }
 
@@ -125,7 +125,7 @@ void lexique::deleteWord(string mot){
  * 
  */
 void lexique::displayNbWords(){
-    cout << mots.size() << endl;
+    cout << mots.size();
 }
 
 /**
@@ -136,9 +136,9 @@ void lexique::displayNbWords(){
  * @return ostream& 
  */
 ostream& operator<<(ostream& os, const lexique& lexique){
-    for(char mot : lexique.mots){
-        vector<char>::const_iterator it = find(lexique.mots.begin(), lexique.mots.end(), mot);
-        os << "Mots : " << mot << "/ Nombre d'itération : " << lexique.frequences[it-lexique.mots.begin()] << endl;
+    for(string mot : lexique.mots){
+        vector<string>::const_iterator it = find(lexique.mots.begin(), lexique.mots.end(), mot);
+        os << mot << " : " << lexique.frequences[it-lexique.mots.begin()] << endl;
     }
     return os;
 }
