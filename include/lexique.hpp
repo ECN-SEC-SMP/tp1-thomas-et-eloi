@@ -20,7 +20,7 @@ class lexique
 {
 private:
    string nom;
-   vector<string> mots;
+   vector<char> mots;
    vector<int> frequences;
 public:
     lexique(string n, string f);
@@ -29,5 +29,8 @@ public:
     int getFrequenceFromWord(string mot);
     void deleteWord(string mot);
     void displayNbWords();
+    
+    
+    friend ostream& operator<<(ostream& os, const lexique& lexique);
 };
 
