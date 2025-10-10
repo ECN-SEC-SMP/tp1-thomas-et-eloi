@@ -10,7 +10,7 @@
  */
 
 #include "utilitaire.hpp"
-#include "lexique.hpp"
+#include "lexique_ligne.hpp"
 
 #include <iostream>
 #include <string>
@@ -50,6 +50,10 @@ int main()
     lexLesMiserables.deleteWord("the");
 
     cout << "After deleting 'the', it now appears " << lexLesMiserables.getFrequenceFromWord("the") << " times in Les Miserables." << endl;
+
+
+    lexique_ligne lexLigne("Lexique Ligne", "assets/lesMiserables_A.txt");
+    lexLigne.displayLinesFromWord("included");
 
     return 0;
 }

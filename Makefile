@@ -6,7 +6,7 @@ ASSETSDIR := assets
 all: $(BUILDDIR)/main.out
 
 # Build the final executable
-$(BUILDDIR)/main.out: $(BUILDDIR)/main.o $(BUILDDIR)/utilitaire.o $(BUILDDIR)/lexique.o
+$(BUILDDIR)/main.out: $(BUILDDIR)/main.o $(BUILDDIR)/utilitaire.o $(BUILDDIR)/lexique.o $(BUILDDIR)/lexique_ligne.o
 	g++ -o $@ $^
 
 # Build main.o
@@ -20,6 +20,10 @@ $(BUILDDIR)/utilitaire.o: $(SRCDIR)/utilitaire.cpp $(INCDIR)/utilitaire.hpp | $(
 # Build lexique.o
 $(BUILDDIR)/lexique.o: $(SRCDIR)/lexique.cpp $(INCDIR)/lexique.hpp | $(BUILDDIR)
 	g++ -I$(INCDIR) -c $(SRCDIR)/lexique.cpp -o $(BUILDDIR)/lexique.o
+
+# Build lexique_ligne.o
+$(BUILDDIR)/lexique_ligne.o: $(SRCDIR)/lexique_ligne.cpp $(INCDIR)/lexique_ligne.hpp | $(BUILDDIR)
+	g++ -I$(INCDIR) -c $(SRCDIR)/lexique_ligne.cpp -o $(BUILDDIR)/lexique_ligne.o
 
 # Create build directory
 $(BUILDDIR):

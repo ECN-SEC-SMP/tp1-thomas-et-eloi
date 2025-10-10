@@ -18,7 +18,7 @@ using namespace std;
 
 class lexique
 {
-private:
+protected:
    string nom;
    vector<string> mots;
    vector<int> frequences;
