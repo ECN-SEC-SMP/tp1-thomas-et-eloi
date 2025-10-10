@@ -24,13 +24,14 @@ private:
    vector<int> frequences;
 public:
     lexique(string n, string f);
+    lexique(string n);
     ~lexique();
     void saveLexique(string f);
-    int getFrequenceFromWord(string mot);
+    int getFrequenceFromWord(string mot) const;
     void deleteWord(string mot);
     void displayNbWords();
     
-    
+    lexique operator+(const lexique& autre) const;
     friend ostream& operator<<(ostream& os, const lexique& lexique);
 };
 

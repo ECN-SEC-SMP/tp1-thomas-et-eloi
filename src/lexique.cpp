@@ -68,6 +68,12 @@ lexique::lexique(string n, string f)
     return;
 }
 
+lexique::lexique(string n){
+    this->nom = n;
+    this->mots = vector<string>();
+    this->frequences = vector<int>();
+}
+
 /**
  * @brief Destroy the lexique::lexique object
  * 
@@ -87,9 +93,11 @@ lexique::~lexique()
  */
 void lexique::saveLexique(string f){
     ofstream Fichier(f);
+    const int largeur = 40; // largeur de base
     for(string mot : mots){
         vector<string>::iterator it = find(mots.begin(), mots.end(), mot);
-        Fichier << mot << " : " << frequences[it-mots.begin()] << endl;
+        int espace = 60 - mot.size();
+        Fichier << mot << string(espace,' ') << ":       " << frequences[it-mots.begin()] << endl;
     }
     Fichier.close();
 }
@@ -101,8 +109,8 @@ void lexique::saveLexique(string f){
  * @param mot Selected word
  * @return int 
  */
-int lexique::getFrequenceFromWord(string mot){
-    vector<string>::iterator it = find(mots.begin(), mots.end(), mot);
+int lexique::getFrequenceFromWord(string mot) const {
+    vector<string>::const_iterator it = find(mots.begin(), mots.end(), mot);
     if(it != mots.end()){
         return frequences[it-mots.begin()];
     }
@@ -126,6 +134,26 @@ void lexique::deleteWord(string mot){
  */
 void lexique::displayNbWords(){
     cout << mots.size();
+}
+
+lexique lexique::operator+(const lexique& autre) const {
+    lexique nouveauLexique("Nouveau Lexique");
+    nouveauLexique.mots = this->mots;
+    nouveauLexique.frequences = this->frequences;
+
+    for(string mot : autre.mots){
+        vector<string>::iterator it = find(nouveauLexique.mots.begin(), nouveauLexique.mots.end(), mot);
+        if(it != nouveauLexique.mots.end()){
+            size_t index = distance(nouveauLexique.mots.begin(), it);
+            nouveauLexique.frequences[index] += autre.getFrequenceFromWord(mot);
+        } else {
+            // Le mot n'existe pas, on l'ajoute
+            nouveauLexique.mots.push_back(mot);
+            nouveauLexique.frequences.push_back(autre.getFrequenceFromWord(mot));
+        }
+    }
+
+    return nouveauLexique;
 }
 
 /**
