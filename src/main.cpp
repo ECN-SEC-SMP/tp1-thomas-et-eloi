@@ -33,6 +33,10 @@ int main()
     lexLesMiserables.displayNbWords();
     cout << " words." << endl;
 
+    lexNDDP.saveLexique("assets/lexique_notreDameDeParis.txt");
+
+    // cout << lexLesMiserables << endl;
+
     lexique lexCombined = lexLesMiserables + lexNDDP;
 
     lexCombined.saveLexique("assets/lexique_combined.txt");
@@ -41,17 +45,11 @@ int main()
 
     lexCombined.saveLexique("assets/lexique_combined_afterSubstraction.txt");
 
-    // lexLesMiserables.saveLexique("assets/lexique_lesMiserables.txt");
+    cout << "The word 'the' appears " << lexLesMiserables.getFrequenceFromWord("the") << " times in Les Miserables." << endl;
 
-    // lexNDDP.saveLexique("assets/lexique_notreDameDeParis.txt");
+    lexLesMiserables.deleteWord("the");
 
-    // cout << lexLesMiserables << endl;
-
-    // cout << "The word 'the' appears " << lexLesMiserables.getFrequenceFromWord("the") << " times in Les Miserables." << endl;
-
-    // lexLesMiserables.deleteWord("the");
-
-    // cout << "After deleting 'the', it now appears " << lexLesMiserables.getFrequenceFromWord("the") << " times in Les Miserables." << endl;
+    cout << "After deleting 'the', it now appears " << lexLesMiserables.getFrequenceFromWord("the") << " times in Les Miserables." << endl;
 
     return 0;
 }

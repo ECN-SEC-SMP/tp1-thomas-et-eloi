@@ -1,6 +1,7 @@
 SRCDIR := src
 INCDIR := include
 BUILDDIR := build
+ASSETSDIR := assets
 
 all: $(BUILDDIR)/main.out
 
@@ -25,4 +26,4 @@ $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
 clean:
-	rm -rfv $(BUILDDIR)
+	rm -rfv $(BUILDDIR) && rm -rfv $(ASSETSDIR)/lexique*

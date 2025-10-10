@@ -41,14 +41,19 @@ lexique::lexique(string n, string f)
 
     util::to_lower(contenu);
 
-    util::remove_punctuation(contenu);
+    // util::remove_punctuation(contenu);
 
-    pch = strtok(const_cast<char*>(contenu.c_str()), " 0123456789\n\r\t");
-
+    pch = strtok(const_cast<char*>(contenu.c_str()), " “!\"#$%&'()*+,-./:;<=>?@ [\\]^_`{|}~0123456789\n\r\t");
+    
     while (pch != NULL)
     {
+        string tmp = string(pch);
+        util::remove_punctuation(tmp);
+        pch = const_cast<char*>(tmp.c_str());
+
         // Search for the word in the existing list
         it_mots = find(ptr_mots->begin(), ptr_mots->end(), pch);
+        
         if (it_mots != ptr_mots->end())
         {
             // Word found, increment its frequency
@@ -62,7 +67,7 @@ lexique::lexique(string n, string f)
             ptr_frequences->push_back(1);
         }
 
-        pch = strtok(NULL, " 0123456789\n\r\t");
+        pch = strtok(NULL, " “�!\"#$%&'()*+,-./:;<=>?@ [\\]^_`{|}~0123456789\n\r\t");
     }
 
     return;
