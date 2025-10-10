@@ -32,6 +32,7 @@ public:
     void displayNbWords();
     
     lexique operator+(const lexique& autre) const;
+    lexique operator-(const lexique& autre) const;
     friend ostream& operator<<(ostream& os, const lexique& lexique);
 };
 

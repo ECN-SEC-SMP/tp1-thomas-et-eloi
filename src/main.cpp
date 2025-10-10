@@ -37,6 +37,10 @@ int main()
 
     lexCombined.saveLexique("assets/lexique_combined.txt");
 
+    lexCombined = lexCombined - lexNDDP;
+
+    lexCombined.saveLexique("assets/lexique_combined_afterSubstraction.txt");
+
     // lexLesMiserables.saveLexique("assets/lexique_lesMiserables.txt");
 
     // lexNDDP.saveLexique("assets/lexique_notreDameDeParis.txt");

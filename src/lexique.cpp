@@ -156,6 +156,29 @@ lexique lexique::operator+(const lexique& autre) const {
     return nouveauLexique;
 }
 
+lexique lexique::operator-(const lexique& autre) const {
+    lexique nouveauLexique("Nouveau Lexique");
+    nouveauLexique.mots = this->mots;
+    nouveauLexique.frequences = this->frequences;
+
+    for(string mot : autre.mots){
+        vector<string>::iterator it = find(nouveauLexique.mots.begin(), nouveauLexique.mots.end(), mot);
+        if(it != nouveauLexique.mots.end()){
+            size_t index = distance(nouveauLexique.mots.begin(), it);
+            int nouvelleFrequence = nouveauLexique.frequences[index] - autre.getFrequenceFromWord(mot);
+            if(nouvelleFrequence > 0){
+                nouveauLexique.frequences[index] = nouvelleFrequence;
+            } else {
+                // La fréquence devient nulle ou négative, on supprime le mot
+                nouveauLexique.mots.erase(it);
+                nouveauLexique.frequences.erase(nouveauLexique.frequences.begin() + index);
+            }
+        }
+    }
+
+    return nouveauLexique;
+}
+
 /**
  * @brief overload operator << to display lexique in terminal
  * 
