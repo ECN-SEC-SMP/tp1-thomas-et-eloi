@@ -5,9 +5,57 @@
 - Eloi Tourangin - eloi.tourangin@eleves.ec-nantes.fr
 - Thomas Verron - thomas.verron@eleves.ec-nantes.fr
 
-Ce projet implémente une classe `lexique` en C++ qui gère un dictionnaire de mots avec leur nombre d'occurrences. Voici une description détaillée de chaque fonction et de son fonctionnement.
+Ce projet implémente deux classes en C++ :
+- La classe `lexique` qui gère un dictionnaire de mots avec leur nombre d'occurrences
+- La classe `lexique_ligne`, héritant de `lexique`, qui ajoute le suivi des numéros de ligne où apparaît chaque mot
 
-## Structure de la classe
+## Table des matières
+
+- [Compilation et éxecution](#compilation-et-éxecution)
+- [Partie 1 : Classe lexique](#partie-1--classe-lexique)
+  - [Structure et implémentation](#structure-et-implémentation)
+  - [Détail des fonctions et leurs implémentations](#détail-des-fonctions-et-leurs-implémentations)
+    - [Constructeur avec fichier](#1-constructeur-avec-fichier)
+    - [Constructeur lexique vide](#2-constructeur-lexique-vide)
+    - [Destructeur](#3-destructeur)
+    - [Sauvegarde du lexique](#4-sauvegarde-du-lexique)
+    - [Recherche de fréquence](#recherche-frequence)
+    - [Suppression d'un mot](#suppression-mot)
+    - [Affichage du nombre de mots](#affichage-mots)
+    - [Opérateur de fusion](#operateur-fusion)
+    - [Opérateur de différence](#operateur-difference)
+    - [Opérateur d'affichage](#operateur-affichage)
+  - [Complexité et performances](#complexité-et-performances)
+  - [Exemple d'utilisation](#exemple-dutilisation)
+  - [Tests de la classe lexique](#tests-de-la-classe-lexique)
+- [Partie 2 : Classe lexique_ligne](#partie-2--classe-lexique_ligne)
+  - [Organisation des données](#organisation-des-données)
+  - [Détail des fonctions](#détail-des-fonctions)
+    - [Constructeur principal](#constructeur-principal)
+    - [2. Destructeur](#2-destructeur)
+    - [3. Affichage des lignes d'un mot](#3-affichage-des-lignes-dun-mot)
+  - [Utilisation détaillée](#utilisation-détaillée)
+  - [Tests de la classe lexique_ligne](#tests-de-la-classe-lexique_ligne)
+
+# Compilation et éxecution
+
+```bash
+# Compiler
+make
+
+# Exécuter
+./build/main.out
+```
+
+ou executer le script bash
+
+```bash
+./build_and_execute.sh
+```
+
+# Partie 1 : Classe lexique
+
+## Structure et implémentation
 
 ```cpp
 class lexique {
@@ -300,57 +348,172 @@ int main() {
 }
 ```
 
-## Compilation et tests
+## Tests de la classe `lexique`
 
-```bash
-# Compiler
-make
+##### Test du constructeur vide
 
-# Exécuter
-./build/main.out
+- Création d'un lexique vide
+- Résultat : 0 mot comme attendu
+
+##### Test du constructeur avec fichier (Les Misérables)
+
+- Construction depuis le fichier texte
+- Nombre de mots distincts : 22 834
+- Sauvegarde réussie dans `assets/lexique_lesMiserables.txt`
+
+##### Test du second constructeur (Notre Dame de Paris)
+
+- Construction depuis un autre fichier texte
+- Nombre de mots distincts : 14 013
+
+##### Test de l'opérateur de fusion (+)
+
+- Fusion de Les Misérables et Notre Dame de Paris
+- Résultat : 26 852 mots distincts
+- Démonstration de l'union des vocabulaires avec addition des fréquences
+
+##### Test de l'opérateur de différence (-)
+
+- Soustraction de Notre Dame de Paris du lexique fusionné
+- Résultat : 22 834 mots (retour au lexique de Les Misérables)
+- Vérifie la cohérence de l'opération inverse
+
+##### Test de recherche et suppression
+
+- Mot test : "the"
+- Fréquence initiale : 40 917 occurrences
+- Après suppression : 0 occurrence
+- Démontre la suppression complète du mot
+
+##### Test de l'opérateur d'affichage
+
+- Test sur un petit lexique de test
+- Exemple de sortie :
+
+```shell
+lorem : 8
+ipsum : 6
+dolor : 9
+sit : 9
+amet : 8
+consectetur : 7
+elit : 8
+adipiscing : 8
 ```
 
-### Tests rapides
+# Partie 2 : Classe lexique_ligne
 
-1. Test basique :
+La classe `lexique_ligne` hérite de la classe `lexique` et ajoute la fonctionnalité de suivi des numéros de ligne où apparaît chaque mot.
+
+## Organisation des données
+
 ```cpp
-lexique lex("test", "input.txt");  // contenu : "a a b c! a. b"
-// Attendu : a->3, b->2, c->1
+class lexique_ligne : public lexique {
+private:
+    map<string, vector<int>> lexique_map;  // Stocke les numéros de ligne pour chaque mot
+};
 ```
 
-2. Test de fusion :
+En plus des structures héritées de la classe mère, cette classe ajoute une map qui associe à chaque mot un vecteur contenant les numéros des lignes où il apparaît. Cette structure permet une recherche efficace des positions d'un mot dans le texte.
+
+## Détail des fonctions
+
+### Constructeur principal
+
 ```cpp
-lexique lex1("test1", "input1.txt");  // contenu : "a b a"
-lexique lex2("test2", "input2.txt");  // contenu : "a c"
-lexique fusion = lex1 + lex2;
-// Attendu : a->3, b->1, c->1
+lexique_ligne::lexique_ligne(string n, string f) : lexique(n, f)
 ```
 
-3. Test de différence :
+Ce constructeur étend celui de la classe mère avec les fonctionnalités suivantes :
+
+Étape 1 : Initialisation
+
+- Appelle le constructeur de la classe mère
+- Crée une entrée vide dans la map pour chaque mot existant
+   
+Étape 2 : Traitement ligne par ligne
+
+- Lit le fichier ligne par ligne
+- Pour chaque ligne :
+  - La convertit en minuscules
+  - La découpe en mots
+  - Pour chaque mot :
+    - Nettoie la ponctuation
+    - Si le mot n'est pas vide :
+      - L'ajoute à la map s'il n'existe pas
+      - Ajoute le numéro de ligne s'il n'est pas déjà présent
+
+### 2. Destructeur
+
 ```cpp
-lexique diff = lex1 - lex2;
-// Attendu : a->1, b->1 (car 2-1=1 pour 'a')
+lexique_ligne::~lexique_ligne()
 ```
 
-## Améliorations possibles
+Nettoie la mémoire en vidant la map des lignes.
 
-1. Performance :
-   - Utiliser `unordered_map<string,int>`
-   - Éviter les `find` redondants dans les opérations
-   - Optimiser la gestion mémoire
+### 3. Affichage des lignes d'un mot
 
-2. Robustesse :
-   - Meilleure gestion des erreurs
-   - Validation des entrées
-   - Tests unitaires complets
+```cpp
+void lexique_ligne::displayLinesFromWord(string mot) const
+```
 
-3. Fonctionnalités :
-   - Ajout de `operator+=` et `operator-=`
-   - Support UTF-8 complet
-   - Statistiques avancées (mots les plus fréquents, etc.)
+Cette méthode affiche les positions d'un mot dans le texte :
 
-4. Interface :
-   - Méthodes pour trier par fréquence
-   - Export dans différents formats
-   - Interface de requête plus riche
+- Recherche d'abord le mot dans la map
+- Si le mot est trouvé :
+  - Affiche "Le mot 'xxx' apparaît aux lignes : "
+  - Liste tous les numéros de ligne où le mot apparaît
+- Si le mot n'est pas trouvé :
+  - Affiche un message d'erreur approprié
 
+### Utilisation détaillée
+
+Voici un exemple complet montrant l'utilisation de la classe `lexique_ligne` :
+
+```cpp
+int main() {
+    // Création du lexique avec suivi des lignes
+    lexique_ligne lex("Les Miserables", "assets/lesMiserables_A.txt");
+    
+    // Affichage des lignes où apparaît un mot
+    lex.displayLinesFromWord("jean");  // Affiche les numéros de ligne où "jean" apparaît
+    
+    // On peut toujours utiliser les méthodes de la classe mère
+    cout << "Fréquence du mot 'jean': " << lex.getFrequenceFromWord("jean") << endl;
+    
+    return 0;
+}
+```
+
+## Tests de la classe `lexique_ligne`
+
+##### Test du constructeur
+
+- Construction depuis Les Misérables
+- Vérification de l'héritage : même nombre de mots (22 834)
+
+##### Tests de displayLinesFromWord
+
+Test avec mot fréquent :
+
+- Mot "included"
+- Apparaît aux lignes : 5, 2198, 14921, 39847, 53007, 63416
+- Total : 6 occurrences
+
+Test avec autre mot fréquent :
+
+- Mot "unique"
+- Apparaît aux lignes : 17529, 22988, 23432, 45471, 48117, 48185, 53702, 61758
+- Total : 8 occurrences
+
+Test avec mot inexistant :
+
+- Test avec "xyzabc123"
+- Message d'erreur approprié affiché
+
+##### Test de l'héritage
+
+- Vérification des méthodes héritées
+- `displayNbWords()` : 22 834 mots
+- `getFrequenceFromWord("included")` : 6 occurrences
+- Démontre le bon fonctionnement de l'héritage
