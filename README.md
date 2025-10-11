@@ -37,6 +37,8 @@ Ce projet implémente deux classes en C++ :
   - [Utilisation détaillée](#utilisation-détaillée)
   - [Tests de la classe lexique_ligne](#tests-de-la-classe-lexique_ligne)
 
+<div style="page-break-after: always;"></div>
+
 # Compilation et éxecution
 
 ```bash
