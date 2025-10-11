@@ -1,3 +1,14 @@
+/**
+ * @file lexique_ligne.cpp
+ * @author Eloi Tourangin (eloi.tourangin@eleves.ec-nantes.fr) and Thomas Verron (thomas.verron@eleves.ec-nantes.fr)
+ * @brief 
+ * @version 0.1
+ * @date 11-10-2025
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #include "lexique_ligne.hpp"
 #include "utilitaire.hpp"
 #include <fstream>
@@ -5,7 +16,12 @@
 #include <stdio.h>
 #include <string.h>
 
-
+/**
+ * @brief Construct a new lexique ligne::lexique ligne object
+ * 
+ * @param n Name of the lexique
+ * @param f Path to the file
+ */
 lexique_ligne::lexique_ligne(string n, string f)
  : lexique(n, f)
 {
@@ -78,14 +94,21 @@ lexique_ligne::lexique_ligne(string n, string f)
 
 }
 
-
+/**
+ * @brief Destroy the lexique ligne::lexique ligne object
+ * 
+ */
 lexique_ligne::~lexique_ligne()
 {
     this->lexique_map.clear();
     return;
 }
 
-
+/**
+ * @brief Display the lines where a word appears
+ * 
+ * @param mot Selected word
+ */
 void lexique_ligne::displayLinesFromWord(string mot) const {
     auto it = this->lexique_map.find(mot);
     if(it != this->lexique_map.end()){

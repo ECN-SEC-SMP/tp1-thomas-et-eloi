@@ -49,8 +49,7 @@ int main()
 
     lexLesMiserables.deleteWord("the");
 
-    cout << "After deleting 'the', it now appears " << lexLesMiserables.getFrequenceFromWord("the") << " times in Les Miserables." << endl;
-
+    cout << "After deleting 'the', it now appears " << lexLesMiserables.getFrequenceFromWord("the") << " times in Les Miserables lexique." << endl;
 
     lexique_ligne lexLigne("Lexique Ligne", "assets/lesMiserables_A.txt");
     lexLigne.displayLinesFromWord("included");

@@ -73,6 +73,11 @@ lexique::lexique(string n, string f)
     return;
 }
 
+/**
+ * @brief Construct a new lexique::lexique object with no file
+ * 
+ * @param n Name of the lexique
+ */
 lexique::lexique(string n){
     this->nom = n;
     this->mots = vector<string>();
@@ -141,6 +146,12 @@ void lexique::displayNbWords(){
     cout << mots.size();
 }
 
+/**
+ * @brief Overload the + operator to add two lexiques
+ * 
+ * @param autre The other lexique to add
+ * @return lexique The resulting lexique after addition
+ */
 lexique lexique::operator+(const lexique& autre) const {
     lexique nouveauLexique("Nouveau Lexique");
     nouveauLexique.mots = this->mots;
@@ -161,6 +172,12 @@ lexique lexique::operator+(const lexique& autre) const {
     return nouveauLexique;
 }
 
+/**
+ * @brief Overload the - operator to subtract two lexiques
+ * 
+ * @param autre The other lexique to subtract
+ * @return lexique The resulting lexique after subtraction
+ */
 lexique lexique::operator-(const lexique& autre) const {
     lexique nouveauLexique("Nouveau Lexique");
     nouveauLexique.mots = this->mots;
